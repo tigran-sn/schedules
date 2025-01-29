@@ -1,26 +1,24 @@
-import { inject, Injectable, OnInit } from '@angular/core';
+import { inject, Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-
 import { environment } from '../../environments/environment';
 import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService implements OnInit {
+export class AuthService {
   private currentUserSubject = new BehaviorSubject<any>(null);
   private http: HttpClient = inject(HttpClient);
+  private platformId: Object = inject(PLATFORM_ID);
 
   currentUser$ = this.currentUserSubject.asObservable();
-  platformId: any;
 
-  ngOnInit(): void {
-    console.log(isPlatformBrowser(this.platformId));
+  constructor() {
     if (isPlatformBrowser(this.platformId)) {
-      if (localStorage.getItem('token')) {
-        this.currentUserSubject.next({ token: localStorage.getItem('token') });
+      const token = localStorage.getItem('token');
+      if (token) {
+        this.currentUserSubject.next({ token });
       }
     }
   }
@@ -30,18 +28,24 @@ export class AuthService implements OnInit {
       .post(`${environment.apiUrl}/auth/login`, { email, password })
       .pipe(
         tap((response: any) => {
-          localStorage.setItem('token', response.token);
+          if (isPlatformBrowser(this.platformId)) {
+            localStorage.setItem('token', response.token);
+          }
           this.currentUserSubject.next(response);
         })
       );
   }
 
   logout(): void {
-    localStorage.removeItem('token');
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('token');
+    }
     this.currentUserSubject.next(null);
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    return isPlatformBrowser(this.platformId)
+      ? localStorage.getItem('token')
+      : null;
   }
 }
