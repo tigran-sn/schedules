@@ -1,0 +1,41 @@
+<div class="schedule-container">
+  <h2>Weekly Schedule</h2>
+  <div class="schedule-grid">
+    @for (schedule of schedules; track schedule.id; let i = $index) {
+    <div class="day-card">
+      <h3>{{ days[schedule.day_of_week] }}</h3>
+      <div class="time-inputs">
+        <div class="time-group">
+          <label>Start Time:</label>
+          <input
+            type="time"
+            [(ngModel)]="schedules[i].start_time"
+            (change)="updateSchedule(i)"
+          />
+        </div>
+        <div class="time-group">
+          <label>End Time:</label>
+          <input
+            type="time"
+            [(ngModel)]="schedules[i].end_time"
+            (change)="updateSchedule(i)"
+          />
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+  <div class="status-check">
+    <button>Check Current Access</button>
+    <!-- (click)="checkCurrentAccess()" -->
+    @if (accessStatus !== null) {
+    <div
+      [class.access-granted]="accessStatus"
+      [class.access-denied]="!accessStatus"
+      class="status-message"
+    >
+      {{ accessStatus ? "Access Granted" : "Access Denied" }}
+    </div>
+    }
+  </div>
+</div>
