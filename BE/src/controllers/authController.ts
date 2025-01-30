@@ -1,34 +1,8 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+
 import { pool } from "../db/database";
-
-export const testConnection = async (req: Request, res: Response) => {
-  //   res.json(29);
-  try {
-    // res.json(9);
-    // const client = await pool.connect();
-    // res.json(10);
-    const result = await pool.query(
-      "SELECT * FROM users WHERE email = 'user1@some.com'"
-    );
-    // res.json(result);
-
-    res.json(result.rows[0]);
-    console.log("Connection successful:", result.rows[0]);
-  } catch (err) {
-    console.error("Connection failed:", err);
-  }
-};
-
-// export const testConnection = async (req: Request, res: Response) => {
-//   res.json(22);
-//   try {
-//   } catch (err) {}
-// };
-export const getOne = async (req: Request, res: Response) => {
-  res.json(20);
-};
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;

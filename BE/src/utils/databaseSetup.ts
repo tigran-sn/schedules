@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
+
 import { pool } from "../db/database";
 
 dotenv.config();
@@ -8,7 +9,6 @@ console.log("Creating users and schedules tables");
 
 const createAndFillUsersTableWithHashedPasswords = async () => {
   try {
-    // Create a users table
     await pool.query(
       `CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
@@ -17,14 +17,12 @@ const createAndFillUsersTableWithHashedPasswords = async () => {
         );`
     );
 
-    // Fill insert users into users table
     const users = await JSON.parse(process.env.USERS!);
     const existingUsersResult = await pool.query("SELECT email FROM users");
     const existingUsers = new Set(
       existingUsersResult.rows.map((row) => row.email)
     );
 
-    // Delete users not in the current USERS list
     const emailsToDelete = existingUsersResult.rows
       .filter((row) => !users.some((user: any) => user.email === row.email))
       .map((row) => row.email);
@@ -39,23 +37,19 @@ const createAndFillUsersTableWithHashedPasswords = async () => {
     for (const user of users) {
       const { email, password } = user;
 
-      // Validate email and handle undefined or empty values
       if (!email) {
         console.error("Error: Email is required for all users");
         continue;
       }
 
-      // Validate password and handle undefined or empty values
       if (!password) {
         console.error("Error: Password is required for all users");
-        continue; // Skip if password is missing
+        continue;
       }
 
-      // Hash the provided password or the email as fallback
       const dataToHash = password || email;
       const hashedPassword = await bcrypt.hash(dataToHash, 10);
 
-      // Insert user into the database
       const result = await pool.query(
         "INSERT INTO users (email, password_hash) VALUES ($1, $2) ON CONFLICT (email) DO NOTHING RETURNING *",
         [email, hashedPassword]
@@ -75,7 +69,6 @@ const createAndFillUsersTableWithHashedPasswords = async () => {
 
 const createAndFillSchedulesTable = async () => {
   try {
-    // Check if table exists
     const checkTableQuery = `
         SELECT EXISTS (
           SELECT FROM information_schema.tables 
@@ -86,7 +79,6 @@ const createAndFillSchedulesTable = async () => {
 
     const tableExists = await pool.query(checkTableQuery);
 
-    // Create table if not exists
     await pool.query(
       `CREATE TABLE IF NOT EXISTS schedules (
           id SERIAL PRIMARY KEY,
@@ -102,7 +94,6 @@ const createAndFillSchedulesTable = async () => {
     if (!tableExists.rows[0].exists) {
       console.log("Table schedules was created successfully");
 
-      // Check if data already exists for these users
       const checkDataQuery = `
           SELECT EXISTS (
             SELECT 1 FROM schedules 
@@ -114,7 +105,6 @@ const createAndFillSchedulesTable = async () => {
       const dataExists = await pool.query(checkDataQuery);
 
       if (!dataExists.rows[0].exists) {
-        // Insert schedules only if data doesn't exist
         const result = await pool.query(
           `
             INSERT INTO schedules (day_of_week, user_id, start_time, end_time) VALUES 
