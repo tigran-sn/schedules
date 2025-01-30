@@ -11,6 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/api/auth/login", authController.login);
+app.get("/api/auth/current", authenticateToken, authController.getCurrentUser);
 
 app.get("/api/schedules", authenticateToken, scheduleController.getSchedules);
 app.put(
