@@ -1,25 +1,29 @@
 <div class="schedule-container">
-  <h2>Weekly Schedule</h2>
+  <h2 class="title">Weekly Schedule</h2>
   <div class="schedule-grid">
     @for (schedule of schedules; track schedule.id; let i = $index) {
     <div class="day-card">
-      <h3>{{ days[schedule.day_of_week] }}</h3>
+      <h3 class="day-title">{{ days[schedule.day_of_week] }}</h3>
       <div class="time-inputs">
         <div class="time-group">
-          <label>Start Time:</label>
-          <input
-            type="time"
-            [(ngModel)]="schedules[i].start_time"
-            (change)="updateSchedule(i)"
-          />
+          <label>Start Time</label>
+          <div class="input-wrapper">
+            <input
+              type="time"
+              [(ngModel)]="schedules[i].start_time"
+              (change)="updateSchedule(i)"
+            />
+          </div>
         </div>
         <div class="time-group">
-          <label>End Time:</label>
-          <input
-            type="time"
-            [(ngModel)]="schedules[i].end_time"
-            (change)="updateSchedule(i)"
-          />
+          <label>End Time</label>
+          <div class="input-wrapper">
+            <input
+              type="time"
+              [(ngModel)]="schedules[i].end_time"
+              (change)="updateSchedule(i)"
+            />
+          </div>
         </div>
       </div>
     </div>

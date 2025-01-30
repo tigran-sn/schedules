@@ -1,19 +1,49 @@
 .app-container {
   min-height: 100vh;
+  background: #f7fafc;
 }
-nav {
-  padding: 1rem;
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #dee2e6;
-  display: flex;
-  justify-content: flex-end;
 
-  button {
-    padding: 0.5rem 1rem;
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+.navbar {
+  padding: 1rem 2rem;
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+
+  .brand {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1a1f36;
+    background: linear-gradient(to right, #4299e1, #667eea);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
+
+  .logout-btn {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: white;
+    background: linear-gradient(to right, #f56565, #e53e3e);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(229, 62, 62, 0.25);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+.main-content {
+  position: relative;
+  min-height: calc(100vh - 64px);
 }

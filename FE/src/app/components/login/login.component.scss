@@ -1,39 +1,92 @@
 .login-container {
-  max-width: 400px;
-  margin: 2rem auto;
-  padding: 2rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  max-width: 420px;
+  margin: 3rem auto;
+  padding: 2.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+
+  .title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #1a1f36;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
 }
+
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 
   label {
     display: block;
     margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #4a5568;
   }
 
-  input {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  .input-wrapper {
+    position: relative;
+
+    input {
+      width: 92%;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      color: #1a1f36;
+      background: #f7fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+
+      &::placeholder {
+        color: #a0aec0;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: #4299e1;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+      }
+    }
   }
 }
+
 button {
   width: 100%;
-  padding: 0.75rem;
-  background-color: #007bff;
+  padding: 0.875rem;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
   color: white;
+  background: linear-gradient(to right, #4299e1, #667eea);
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(66, 153, 225, 0.25);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
 
   &:disabled {
-    background-color: #ccc;
+    background: #e2e8f0;
+    cursor: not-allowed;
   }
 }
-.error {
-  color: red;
+
+.error-message {
   margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: #e53e3e;
+  background: #fff5f5;
+  border: 1px solid #fed7d7;
+  border-radius: 6px;
 }

@@ -1,8 +1,13 @@
 <div class="app-container">
   @if (authService.currentUser$ | async) {
-  <nav>
-    <button (click)="logout()">Logout</button>
+  <nav class="navbar">
+    <div class="brand">Schedules</div>
+    <button class="logout-btn" (click)="logout()">
+      <span>Logout</span>
+    </button>
   </nav>
   }
-  <router-outlet></router-outlet>
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
 </div>
