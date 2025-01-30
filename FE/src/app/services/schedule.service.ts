@@ -11,7 +11,6 @@ export class ScheduleService {
   private http: HttpClient = inject(HttpClient);
 
   getSchedules(): Observable<Schedule[]> {
-    console.log('get schedule service');
     return this.http.get<Schedule[]>(`${environment.apiUrl}/schedules`);
   }
 

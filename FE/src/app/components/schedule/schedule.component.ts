@@ -19,7 +19,6 @@ export class ScheduleComponent implements OnInit {
   private scheduleService: ScheduleService = inject(ScheduleService);
 
   ngOnInit(): void {
-    console.log('get schedule goinint');
     this.days = Object.keys(DayOfWeek).filter((key) => isNaN(Number(key)));
     this.loadSchedules();
   }
