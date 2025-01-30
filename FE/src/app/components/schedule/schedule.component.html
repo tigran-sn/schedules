@@ -25,17 +25,4 @@
     </div>
     }
   </div>
-  <div class="status-check">
-    <button>Check Current Access</button>
-    <!-- (click)="checkCurrentAccess()" -->
-    @if (accessStatus !== null) {
-    <div
-      [class.access-granted]="accessStatus"
-      [class.access-denied]="!accessStatus"
-      class="status-message"
-    >
-      {{ accessStatus ? "Access Granted" : "Access Denied" }}
-    </div>
-    }
-  </div>
 </div>

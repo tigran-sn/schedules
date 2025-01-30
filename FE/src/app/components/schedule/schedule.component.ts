@@ -29,15 +29,6 @@ export class ScheduleComponent implements OnInit {
       next: (schedules: Schedule[]) => (this.schedules = schedules),
       error: (error) => console.error('Error loading schedules:', error),
     });
-
-    // this.scheduleService.getSchedule().subscribe({
-    //   next: (schedules) => {
-    //     schedules.forEach((schedule) => {
-    //       this.schedules[schedule.day_of_week] = schedule;
-    //     });
-    //   },
-    //   error: (error) => console.error('Error loading schedules:', error),
-    // });
   }
 
   updateSchedule(dayIndex: number): void {
@@ -54,16 +45,4 @@ export class ScheduleComponent implements OnInit {
         error: (error) => console.error('Error updating schedule:', error),
       });
   }
-
-  // checkCurrentAccess(): void {
-  //   this.scheduleService.checkAccess().subscribe({
-  //     next: (response) => {
-  //       this.accessStatus = response.status;
-  //     },
-  //     error: (error) => {
-  //       console.error('Error checking access:', error);
-  //       this.accessStatus = false;
-  //     },
-  //   });
-  // }
 }

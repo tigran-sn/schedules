@@ -15,18 +15,10 @@ export class ScheduleService {
     return this.http.get<Schedule[]>(`${environment.apiUrl}/schedules`);
   }
 
-  // getSchedule(): Observable<Schedule[]> {
-  //   return this.http.get<Schedule[]>(`${environment.apiUrl}/schedule`);
-  // }
-
   updateSchedule(schedule: Partial<Schedule>): Observable<any> {
     return this.http.put(
       `${environment.apiUrl}/schedule/${schedule.id}`,
       schedule
     );
-  }
-
-  checkAccess(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/access`);
   }
 }
