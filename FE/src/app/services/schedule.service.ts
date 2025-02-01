@@ -16,7 +16,7 @@ export class ScheduleService {
 
   updateSchedule(schedule: Partial<Schedule>): Observable<any> {
     return this.http.put(
-      `${environment.apiUrl}/schedule/${schedule.id}`,
+      `${environment.apiUrl}/schedules/${schedule.id}`,
       schedule
     );
   }

@@ -15,7 +15,7 @@ app.get("/api/auth/current", authenticateToken, authController.getCurrentUser);
 
 app.get("/api/schedules", authenticateToken, scheduleController.getSchedules);
 app.put(
-  "/api/schedule/:id",
+  "/api/schedules/:id",
   authenticateToken,
   scheduleController.updateSchedule
 );
