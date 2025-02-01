@@ -3,6 +3,7 @@ import cors from "cors";
 
 import { authenticateToken } from "./middleware/auth";
 import * as authController from "./controllers/authController";
+import * as userController from "./controllers/userController";
 import * as scheduleController from "./controllers/scheduleController";
 
 export const app = express();
@@ -11,7 +12,8 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/api/auth/login", authController.login);
-app.get("/api/auth/current", authenticateToken, authController.getCurrentUser);
+
+app.get("/api/user/current", authenticateToken, userController.getCurrentUser);
 
 app.get("/api/schedules", authenticateToken, scheduleController.getSchedules);
 app.put(
