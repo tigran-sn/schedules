@@ -1,27 +1,37 @@
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { isPlatformBrowser } from '@angular/common';
+import { User } from '../models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private currentUserSubject = new BehaviorSubject<any>(null);
-  private http: HttpClient = inject(HttpClient);
-  private platformId: Object = inject(PLATFORM_ID);
+  private readonly TOKEN_KEY = 'token';
+  private readonly http: HttpClient = inject(HttpClient);
+  private readonly platformId: Object = inject(PLATFORM_ID);
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
 
-  currentUser$ = this.currentUserSubject.asObservable();
+  currentUser$: Observable<User | null> =
+    this.currentUserSubject.asObservable();
 
-  constructor() {
-    if (isPlatformBrowser(this.platformId)) {
-      const token = localStorage.getItem('token');
-      if (token) {
-        this.currentUserSubject.next({ token });
-      }
+  loadCurrentUser(): Observable<User | null> {
+    if (!this.getToken()) {
+      return of(null);
     }
+
+    return this.http.get<User>(`${environment.apiUrl}/api/user/current`).pipe(
+      tap((user) => {
+        this.currentUserSubject.next(user);
+      }),
+      catchError((err) => {
+        console.error('Failed to load user:', err);
+        return of(null);
+      })
+    );
   }
 
   login(email: string, password: string): Observable<any> {
@@ -30,23 +40,32 @@ export class AuthService {
       .pipe(
         tap((response: any) => {
           if (isPlatformBrowser(this.platformId)) {
-            localStorage.setItem('token', response.token);
+            this.setToken(response.token);
           }
-          this.currentUserSubject.next(response);
         })
       );
   }
 
   logout(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('token');
-    }
-    this.currentUserSubject.next(null);
+    this.removeToken();
   }
 
   getToken(): string | null {
-    return isPlatformBrowser(this.platformId)
-      ? localStorage.getItem('token')
-      : null;
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem(this.TOKEN_KEY);
+    }
+    return null;
+  }
+
+  setToken(token: string): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem(this.TOKEN_KEY, token);
+    }
+  }
+
+  removeToken() {
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.removeItem(this.TOKEN_KEY);
+    }
   }
 }
