@@ -1,7 +1,14 @@
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  Observable,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { environment } from '../../environments/environment';
 import { isPlatformBrowser } from '@angular/common';
 import { User } from '../models';
@@ -23,8 +30,8 @@ export class AuthService {
       return of(null);
     }
 
-    return this.http.get<User>(`${environment.apiUrl}/api/user/current`).pipe(
-      tap((user) => {
+    return this.http.get<User>(`${environment.apiUrl}/user/current`).pipe(
+      tap((user: User) => {
         this.currentUserSubject.next(user);
       }),
       catchError((err) => {
@@ -42,12 +49,14 @@ export class AuthService {
           if (isPlatformBrowser(this.platformId)) {
             this.setToken(response.token);
           }
-        })
+        }),
+        switchMap(() => this.loadCurrentUser())
       );
   }
 
   logout(): void {
     this.removeToken();
+    this.currentUserSubject.next(null);
   }
 
   getToken(): string | null {

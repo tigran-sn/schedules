@@ -1,5 +1,4 @@
 <div class="app-container">
-  @if (authService.currentUser$ | async) {
   <nav class="navbar">
     <div class="brand">
       <svg class="logo" width="130" height="24" viewBox="0 0 130 24">
@@ -33,11 +32,15 @@
         </text>
       </svg>
     </div>
-    <button class="logout-btn" (click)="logout()">
-      <span>Logout</span>
-    </button>
+    @if (authService.currentUser$ | async; as user) {
+    <div class="user-section">
+      <div class="welcome-message">Welcome, {{ user.email }}</div>
+      <button class="logout-btn" (click)="logout()">
+        <span>Logout</span>
+      </button>
+    </div>
+    }
   </nav>
-  }
   <main class="main-content">
     <router-outlet></router-outlet>
   </main>

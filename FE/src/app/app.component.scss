@@ -21,6 +21,18 @@
     -webkit-text-fill-color: transparent;
   }
 
+  .user-section {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+
+    .welcome-message {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #4a5568;
+    }
+  }
+
   .logout-btn {
     padding: 0.625rem 1.25rem;
     font-size: 0.875rem;
