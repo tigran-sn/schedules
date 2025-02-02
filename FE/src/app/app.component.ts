@@ -3,11 +3,12 @@ import { AsyncPipe } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 
 import { AuthService } from './services/auth.service';
+import { LoaderComponent } from './components/loader/loader.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  imports: [AsyncPipe, RouterModule],
+  imports: [AsyncPipe, RouterModule, LoaderComponent],
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
