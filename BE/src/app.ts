@@ -13,6 +13,7 @@ app.use(express.json());
 
 app.post("/api/auth/login", authController.login);
 
+app.get("/api/users", authenticateToken, userController.getUsers);
 app.get("/api/users/current", authenticateToken, userController.getCurrentUser);
 
 app.get("/api/schedules", authenticateToken, scheduleController.getSchedules);
