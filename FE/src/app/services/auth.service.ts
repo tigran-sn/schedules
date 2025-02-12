@@ -30,7 +30,7 @@ export class AuthService {
       return of(null);
     }
 
-    return this.http.get<User>(`${environment.apiUrl}/user/current`).pipe(
+    return this.http.get<User>(`${environment.apiUrl}/users/current`).pipe(
       tap((user: User) => {
         this.currentUserSubject.next(user);
       }),
