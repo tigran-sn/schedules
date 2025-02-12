@@ -4,16 +4,18 @@ import { pool } from "../db/database";
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
-    const result = await pool.query("SELECT id, email FROM users", [
-      req.user?.id,
-    ]);
+    const order =
+      req.query.order?.toString().toUpperCase() === "DESC" ? "DESC" : "ASC";
+
+    const result = await pool.query(
+      `SELECT id, email FROM users ORDER BY id ${order}`
+    );
 
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Users not found" });
     }
 
-    const { id, email } = result.rows[0];
-    res.json({ id, email });
+    res.json(result.rows);
   } catch (error) {
     console.error("Get users error:", error);
     res.status(500).json({ message: "Server error" });
