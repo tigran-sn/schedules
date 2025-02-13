@@ -1,15 +1,16 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { Schedule } from '../../models/schedule';
-import { ScheduleService } from '../../services/schedule.service';
 import { DayOfWeek } from '../../enums';
+import { Schedule } from '../../models/schedule';
+import { ScheduleService, AuthService } from '../../services';
 
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.component.html',
   styleUrls: ['./schedule.component.scss'],
-  imports: [FormsModule],
+  imports: [FormsModule, AsyncPipe],
 })
 export class ScheduleComponent implements OnInit {
   days: string[] = [];
@@ -17,6 +18,7 @@ export class ScheduleComponent implements OnInit {
   accessStatus: boolean | null = null;
 
   private scheduleService: ScheduleService = inject(ScheduleService);
+  authService: AuthService = inject(AuthService);
 
   ngOnInit(): void {
     this.days = Object.keys(DayOfWeek).filter((key) => isNaN(Number(key)));

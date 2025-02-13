@@ -1,5 +1,10 @@
 <div class="schedule-container">
-  <h2 class="title">Weekly Schedule</h2>
+  <h2 class="title">
+    Weekly Schedule for
+    <span style="color: #558de6">{{
+      (authService.currentUser$ | async)?.email
+    }}</span>
+  </h2>
   <div class="schedule-grid">
     @for (schedule of schedules; track schedule.id; let i = $index) {
     <div class="day-card">
