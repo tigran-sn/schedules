@@ -1,6 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-
+import {
+  Router,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+  UrlTree,
+} from '@angular/router';
+import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({
@@ -10,12 +15,30 @@ export class AuthGuard {
   private authService: AuthService = inject(AuthService);
   private router: Router = inject(Router);
 
-  canActivate(): boolean {
-    if (this.authService.getToken()) {
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ):
+    | boolean
+    | UrlTree
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree> {
+    const token = this.authService.getToken();
+    const isAuthPage = route.data['isAuthPage'];
+
+    if (token) {
+      if (isAuthPage) {
+        return this.router.createUrlTree(['/users']);
+      }
       return true;
     }
 
-    this.router.navigate(['/login']);
-    return false;
+    if (!isAuthPage) {
+      return this.router.createUrlTree(['/login'], {
+        queryParams: { returnUrl: state.url },
+      });
+    }
+
+    return true;
   }
 }
