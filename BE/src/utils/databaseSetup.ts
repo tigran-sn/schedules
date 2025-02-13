@@ -13,6 +13,9 @@ const createAndFillUsersTableWithHashedPasswords = async () => {
       `CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
             email VARCHAR(255) UNIQUE NOT NULL,
+            username VARCHAR(255) UNIQUE NOT NULL,
+            first_name VARCHAR(255),
+            last_name VARCHAR(255),
             password_hash VARCHAR(255) NOT NULL
         );`
     );
@@ -35,7 +38,7 @@ const createAndFillUsersTableWithHashedPasswords = async () => {
     }
 
     for (const user of users) {
-      const { email, password } = user;
+      const { email, password, username, first_name, last_name } = user;
 
       if (!email) {
         console.error("Error: Email is required for all users");
@@ -51,8 +54,8 @@ const createAndFillUsersTableWithHashedPasswords = async () => {
       const hashedPassword = await bcrypt.hash(dataToHash, 10);
 
       const result = await pool.query(
-        "INSERT INTO users (email, password_hash) VALUES ($1, $2) ON CONFLICT (email) DO NOTHING RETURNING *",
-        [email, hashedPassword]
+        "INSERT INTO users (email, password_hash, username, first_name, last_name) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (email) DO NOTHING RETURNING *",
+        [email, hashedPassword, username, first_name, last_name]
       );
 
       if (result.rows.length > 0) {

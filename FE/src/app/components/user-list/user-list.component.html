@@ -16,8 +16,11 @@
     @for (user of users; track user.id) {
     <div class="user-card">
       <div class="user-info">
-        <div class="user-email">{{ user.email }}</div>
-        <div class="user-id">ID: {{ user.id }}</div>
+        <div class="user-email">Email: {{ user.email }}</div>
+        <div class="user-email">
+          Name: {{ user.first_name }} {{ user.last_name }}
+        </div>
+        <div class="user-id">Username: {{ user.username }}</div>
       </div>
     </div>
     }
