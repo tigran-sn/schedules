@@ -16,7 +16,10 @@ const createAndFillUsersTableWithHashedPasswords = async () => {
             username VARCHAR(255) UNIQUE NOT NULL,
             first_name VARCHAR(255),
             last_name VARCHAR(255),
-            password_hash VARCHAR(255) NOT NULL
+            password_hash VARCHAR(255) NOT NULL,
+            profile_image_url VARCHAR(500),
+            created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
         );`
     );
 
@@ -38,7 +41,14 @@ const createAndFillUsersTableWithHashedPasswords = async () => {
     }
 
     for (const user of users) {
-      const { email, password, username, first_name, last_name } = user;
+      const {
+        email,
+        password,
+        username,
+        first_name,
+        last_name,
+        profile_image_url,
+      } = user;
 
       if (!email) {
         console.error("Error: Email is required for all users");
@@ -54,8 +64,15 @@ const createAndFillUsersTableWithHashedPasswords = async () => {
       const hashedPassword = await bcrypt.hash(dataToHash, 10);
 
       const result = await pool.query(
-        "INSERT INTO users (email, password_hash, username, first_name, last_name) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (email) DO NOTHING RETURNING *",
-        [email, hashedPassword, username, first_name, last_name]
+        "INSERT INTO users (email, password_hash, username, first_name, last_name, profile_image_url, updated_at) VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP) ON CONFLICT (email) DO NOTHING RETURNING *",
+        [
+          email,
+          hashedPassword,
+          username,
+          first_name || null,
+          last_name || null,
+          profile_image_url || null,
+        ]
       );
 
       if (result.rows.length > 0) {

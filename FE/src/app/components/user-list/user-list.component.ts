@@ -35,4 +35,13 @@ export class UserListComponent {
       complete: () => (this.isLoading = false),
     });
   }
+
+  getUserInitials(user: User): string {
+    const firstInitial = user.first_name ? user.first_name[0] : '';
+    const lastInitial = user.last_name ? user.last_name[0] : '';
+    return (
+      (firstInitial + lastInitial).toUpperCase() ||
+      user.username[0].toUpperCase()
+    );
+  }
 }
