@@ -4,11 +4,12 @@ import { Router, RouterModule } from '@angular/router';
 
 import { AuthService } from './services/auth.service';
 import { LoaderComponent } from './components/loader/loader.component';
+import { NavigationComponent } from './components/navigation/navigation.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  imports: [AsyncPipe, RouterModule, LoaderComponent],
+  imports: [AsyncPipe, RouterModule, LoaderComponent, NavigationComponent],
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
