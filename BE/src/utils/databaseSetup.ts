@@ -7,6 +7,8 @@ dotenv.config();
 
 console.log("Creating users and schedules tables");
 
+// TODO: Implement createAndFillRolesTable method
+
 const createAndFillUsersTableWithHashedPasswords = async () => {
   try {
     await pool.query(
@@ -19,7 +21,8 @@ const createAndFillUsersTableWithHashedPasswords = async () => {
             password_hash VARCHAR(255) NOT NULL,
             profile_image_url VARCHAR(500),
             created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+            updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+            user_role INT UNIQUE NOT NULL DEFAULT 0
         );`
     );
 
@@ -48,6 +51,7 @@ const createAndFillUsersTableWithHashedPasswords = async () => {
         first_name,
         last_name,
         profile_image_url,
+        user_role,
       } = user;
 
       if (!email) {
@@ -64,7 +68,7 @@ const createAndFillUsersTableWithHashedPasswords = async () => {
       const hashedPassword = await bcrypt.hash(dataToHash, 10);
 
       const result = await pool.query(
-        "INSERT INTO users (email, password_hash, username, first_name, last_name, profile_image_url, updated_at) VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP) ON CONFLICT (email) DO NOTHING RETURNING *",
+        "INSERT INTO users (email, password_hash, username, first_name, last_name, profile_image_url, updated_at, user_role) VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP, $7) ON CONFLICT (email) DO NOTHING RETURNING *",
         [
           email,
           hashedPassword,
@@ -72,6 +76,7 @@ const createAndFillUsersTableWithHashedPasswords = async () => {
           first_name || null,
           last_name || null,
           profile_image_url || null,
+          user_role || 0,
         ]
       );
 
