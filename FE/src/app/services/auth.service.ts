@@ -25,6 +25,10 @@ export class AuthService {
   currentUser$: Observable<User | null> =
     this.currentUserSubject.asObservable();
 
+  getRole(): number {
+    return this.currentUserSubject.value?.user_role ?? 0;
+  }
+
   loadCurrentUser(): Observable<User | null> {
     if (!this.getToken()) {
       return of(null);
