@@ -1,0 +1,52 @@
+<app-loader />
+
+<div class="app-container">
+  <nav class="navbar">
+    <div class="brand">
+      <svg class="logo" width="130" height="24" viewBox="0 0 130 24">
+        <defs>
+          <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color: #4299e1" />
+            <stop offset="100%" style="stop-color: #667eea" />
+          </linearGradient>
+        </defs>
+        <g>
+          <rect
+            x="0"
+            y="0"
+            width="24"
+            height="24"
+            rx="3"
+            fill="url(#logoGradient)"
+          />
+          <rect x="4" y="9" width="16" height="2" fill="white" />
+          <rect x="6" y="13" width="12" height="7" fill="white" opacity="0.8" />
+        </g>
+        <text
+          x="28"
+          y="20"
+          font-family="Arial, sans-serif"
+          font-size="18"
+          font-weight="bold"
+          fill="url(#logoGradient)"
+        >
+          Schedules
+        </text>
+      </svg>
+    </div>
+    @if (authService.currentUser$ | async; as user) {
+    <app-navigation />
+    <div class="user-section">
+      <div class="welcome-message">
+        Welcome, {{ user.first_name }} {{ user.last_name }}
+      </div>
+      <button class="logout-btn" (click)="logout()">
+        <span>Logout</span>
+      </button>
+    </div>
+    }
+  </nav>
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

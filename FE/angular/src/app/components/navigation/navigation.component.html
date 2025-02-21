@@ -1,0 +1,18 @@
+<div class="nav-links">
+  <a
+    *hasRole="[roles.ADMIN, roles.GENERAL]"
+    routerLink="/schedule"
+    routerLinkActive="active"
+    class="nav-link"
+  >
+    Schedule
+  </a>
+  <a
+    *hasRole="roles.ADMIN"
+    routerLink="/users"
+    routerLinkActive="active"
+    class="nav-link"
+  >
+    Users
+  </a>
+</div>
